@@ -1,0 +1,8 @@
+[base]
+symbol="INJUSDT"
+interval="1m"
+
+start_year=2022
+strat_month=10
+end_year=2023
+end_month=8
