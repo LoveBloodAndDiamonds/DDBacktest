@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 
-from app.schemas import Candle, BacktestResult
+import pandas as pd
 
 
 class Strategy(ABC):
 
     @abstractmethod
-    def run_backtest(self, data: list[Candle]) -> BacktestResult:
+    def run_backtest(self, data: pd.DataFrame):
         ...

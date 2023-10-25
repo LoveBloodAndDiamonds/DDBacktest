@@ -1,8 +1,13 @@
-[base]
-symbol="INJUSDT"
+[base_conf]
+symbol="OGNUSDT"
 interval="1m"
 
-start_year=2022
-strat_month=10
+[backtest_ranges]
+start_year=2023
+strat_month=3
 end_year=2023
 end_month=8
+
+[logs_conf]
+level="DEBUG"  # DEBUG may be decease app speed may be one of: ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+path=false # Path to log files, like "logs/app.log", can by false

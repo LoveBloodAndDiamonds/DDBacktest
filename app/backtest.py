@@ -1,15 +1,16 @@
 from typing import Type
 
-from app.schemas import Candle, BacktestResult
+import pandas as pd
+
 from app.strategies import Strategy
 
 
 class Backtest:
 
-    def __init__(self, data: list[Candle], strategy: Type[Strategy]):
+    def __init__(self, data: pd.DataFrame, strategy: Type[Strategy]):
         self.data = data
         self.strategy = strategy
 
-    def run(self) -> BacktestResult:
+    def run(self) -> pd.DataFrame:
         result = self.strategy().run_backtest(self.data)
         return result

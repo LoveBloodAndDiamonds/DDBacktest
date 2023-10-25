@@ -825,6 +825,19 @@ files = [
 ]
 
 [[package]]
+name = "ta-lib"
+version = "0.4.28"
+description = "Python wrapper for TA-Lib"
+optional = false
+python-versions = "*"
+files = [
+    {file = "TA-Lib-0.4.28.tar.gz", hash = "sha256:3f03847162e003e0d92a8a89d9e8b7192dfe1235507e2f7d1d0e66cd5af7a48e"},
+]
+
+[package.dependencies]
+numpy = "*"
+
+[[package]]
 name = "tenacity"
 version = "8.2.3"
 description = "Retry code until it succeeds"
@@ -919,4 +932,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "2d11ae9c51534d88fb6a08ad9e22c7249e3c02aaafc67bb3ae5c366988663a0f"
+content-hash = "81173b75f16c54cf366186212d1ffef80533ca01706e443f03815eab2ad53786"

@@ -1,17 +1,25 @@
 __all__ = ("conf", "logger",)
 
 import sys
+from typing import Literal
 
 import pendulum
+import toml
 from loguru import logger
 from pydantic import BaseModel
-import toml
 
 
-class Base(BaseModel):
+class BaseConf(BaseModel):
     symbol: str
     interval: str
 
+
+class LogsConf(BaseModel):
+    path: str | bool
+    level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+
+
+class BacktestRanges(BaseModel):
     start_year: int
     strat_month: int
     end_year: int
@@ -19,7 +27,9 @@ class Base(BaseModel):
 
 
 class Configuration(BaseModel):
-    base: Base
+    base_conf: BaseConf
+    backtest_ranges: BacktestRanges
+    logs_conf: LogsConf
 
 
 class LoguruConfiguration:
@@ -29,8 +39,11 @@ class LoguruConfiguration:
         record["extra"]["datetime"] = pendulum.now("Europe/Moscow")
 
     @classmethod
-    def get_logger(cls, logs_path: str = "logs/app.log"):
+    def get_logger(cls,
+                   logs_path: str = "logs/app.log",
+                   level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "DEBUG"):
         """
+        :param level:
         :param logs_path: Can be empty, so logs will not write to file
         :return:
         """
@@ -44,7 +57,7 @@ class LoguruConfiguration:
                               "<bold>{message}</bold>",
                        rotation="10 MB",
                        compression='zip')
-        logger.add(sys.stderr, level="DEBUG",
+        logger.add(sys.stderr, level=level,
                    format="<white>{extra[datetime]:%d.%m %H:%M:%S.%f}</white>|"
                           "<level>{level}</level>|"
                           "<bold>{message}</bold>",
@@ -52,7 +65,10 @@ class LoguruConfiguration:
         return logger
 
 
-with open("../config.toml", 'r') as file:
+with open("config.toml", 'r') as file:
     conf = Configuration.model_validate(toml.load(file))
 
-logger = LoguruConfiguration.get_logger("")  # noqa
+logger = LoguruConfiguration.get_logger(  # noqa
+    logs_path=conf.logs_conf.path,
+    level=conf.logs_conf.level
+)
